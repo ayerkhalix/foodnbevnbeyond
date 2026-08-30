@@ -1,0 +1,7 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { PageIntro, PlaceLogo, SiteFooter, SiteHeader } from '@/components/site-shell'
+import { places, placePath } from '@/lib/places'
+
+export default function ExplorePage() { return <main className="bg-sand text-ink"><SiteHeader /><PageIntro eyebrow="The collection" title="Explore our places." description="Discover flavors, tables, and experiences across Food N Bev & Beyond." /><section className="mx-auto grid max-w-7xl gap-5 px-5 pb-24 md:grid-cols-2 md:px-10">{places.map((place) => <Link href={placePath(place.slug)} key={place.slug} className="group relative min-h-96 overflow-hidden bg-ink text-white"><Image src={place.image} alt={place.name} fill className="object-cover opacity-80 transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" /><div className="absolute left-7 top-7"><PlaceLogo place={place} className="h-24 w-36 shadow-sm" /></div><div className="absolute inset-x-7 bottom-7"><p className="text-[10px] uppercase tracking-[.24em] text-coral">{place.category} · {place.accent}</p><h2 className="mt-3 font-serif text-4xl capitalize">{place.name}</h2><p className="mt-3 max-w-sm text-sm text-white/70">{place.description}</p><p className="mt-6 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.2em]">Explore <ArrowRight className="size-4" /></p></div></Link>)}</section><SiteFooter /></main> }
