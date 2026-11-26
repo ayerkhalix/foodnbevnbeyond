@@ -1,6 +1,51 @@
 import Link from 'next/link'
-import { ArrowRight, BookOpen, MessageCircle } from 'lucide-react'
+import { ArrowRight, BookOpen } from 'lucide-react'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Brand, PlaceLogo } from '@/components/site-shell'
 import { placeMenuPath, places, placePath } from '@/lib/places'
 
-export default async function WelcomePage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const place = places.find((item) => item.slug === slug); if (!place) notFound(); const isRestaurant = place.category === 'Restaurant'; return <main className="flex min-h-screen flex-col bg-ink px-5 py-8 text-white"><div className="flex items-center justify-between text-[10px] uppercase tracking-[.22em] text-white/55"><Link href="/">Food N Bev & Beyond</Link><span>Guest companion</span></div><div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-16"><p className="eyebrow text-coral">Welcome to</p><h1 className="mt-5 font-serif text-6xl leading-[.9] tracking-[-.04em]">{place.name}</h1><p className="mt-6 text-lg leading-7 text-white/65">{isRestaurant ? 'Fresh from the sea. Made for unforgettable moments.' : 'Your island escape begins here.'}</p><div className="mt-12 grid gap-3"><Link className="flex items-center justify-between bg-coral px-5 py-5 text-[10px] font-semibold uppercase tracking-[.2em] text-ink" href={`${placePath(place.slug)}#${isRestaurant ? 'menu' : 'overview'}`}>{isRestaurant ? 'View menu' : 'Explore amenities'}<ArrowRight className="size-4" /></Link><Link className="flex items-center justify-between border border-white/20 px-5 py-5 text-[10px] font-semibold uppercase tracking-[.2em]" href={isRestaurant ? placeMenuPath(place.slug) : `${placePath(place.slug)}#feedback`}>{isRestaurant ? 'View full menu' : 'Leave feedback'}{isRestaurant ? <BookOpen className="size-4" /> : <MessageCircle className="size-4" />}</Link><Link className="flex items-center justify-between border border-white/20 px-5 py-5 text-[10px] font-semibold uppercase tracking-[.2em]" href={placePath(place.slug)}>About us<ArrowRight className="size-4" /></Link><Link className="flex items-center justify-between border border-white/20 px-5 py-5 text-[10px] font-semibold uppercase tracking-[.2em]" href="/explore">Explore our other places<ArrowRight className="size-4" /></Link></div></div><p className="mx-auto w-full max-w-md text-center text-xs text-white/35">Scan. Settle in. Make yourself at home.</p></main> }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const place = places.find((item) => item.slug === slug)
+  return place ? { title: `Welcome to ${place.shortName}` } : {}
+}
+
+export default async function WelcomePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const place = places.find((item) => item.slug === slug)
+  if (!place) notFound()
+  return (
+    <div className="page-width welcome-page">
+      <header>
+        <Brand />
+      </header>
+      <main className="welcome-content">
+        <PlaceLogo place={place} className="detail-logo" priority />
+        <h1>Welcome to {place.shortName}</h1>
+        <p className="detail-description">{place.description}</p>
+        <Link
+          className="button-primary welcome-menu"
+          href={placeMenuPath(place.slug)}
+        >
+          <BookOpen size={18} aria-hidden="true" /> View menu
+        </Link>
+        <Link className="welcome-link" href={placePath(place.slug)}>
+          Restaurant details <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+        <Link className="welcome-link" href="/explore">
+          Explore our other restaurants{' '}
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+      </main>
+    </div>
+  )
+}

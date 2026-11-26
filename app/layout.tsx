@@ -4,12 +4,19 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 const bodyFont = DM_Sans({ subsets: ['latin'], variable: '--font-body' })
-const displayFont = Cormorant_Garamond({ subsets: ['latin'], variable: '--font-display', weight: ['400', '500', '600', '700'] })
+const displayFont = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
+})
 
 export const metadata: Metadata = {
-  title: 'Food N Bev & Beyond Corporation — More places. More experiences.',
-  description: 'A premium hospitality ecosystem bringing together restaurants and unforgettable experiences in El Nido, Palawan.',
-  generator: 'v0.app',
+  title: {
+    default: 'Food N Bev & Beyond — Restaurants in El Nido, Palawan',
+    template: '%s | Food N Bev & Beyond',
+  },
+  description:
+    'Find your table at Coco Resto, The Lighthouse, Moringa Tree, and Sa Kurbada. Browse menus and contact our restaurants in El Nido, Palawan.',
   icons: {
     icon: '/logos/food%20n%20bev%20transparent.png',
     apple: '/logos/food%20n%20bev%20transparent.png',
@@ -17,11 +24,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#596438',
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({
@@ -30,8 +35,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-sand">
-      <body className={`${bodyFont.variable} ${displayFont.variable} antialiased`}>
+    <html lang="en" className="bg-sand" data-scroll-behavior="smooth">
+      <body
+        className={`${bodyFont.variable} ${displayFont.variable} antialiased`}
+      >
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

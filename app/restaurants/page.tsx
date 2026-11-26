@@ -1,5 +1,19 @@
-import Link from 'next/link'
-import { PageIntro, PlaceLogo, SiteFooter, SiteHeader } from '@/components/site-shell'
-import { places, placePath } from '@/lib/places'
+import type { Metadata } from 'next'
+import { PageIntro, SitePage } from '@/components/site-shell'
+import { RestaurantCollection } from '@/components/restaurant-collection'
 
-export default function RestaurantsPage() { const restaurants = places.filter((p) => p.category === 'Restaurant'); return <main className="bg-sand text-ink"><SiteHeader /><PageIntro eyebrow="Dine" title="Good food, generously shared." description="Coastal seafood and Filipino comfort, made with the kind of care you can taste." /><section className="mx-auto grid max-w-7xl gap-5 px-5 pb-24 md:grid-cols-2 md:px-10">{restaurants.map((place) => <Link href={placePath(place.slug)} key={place.slug} className="border border-ink/15 p-8 transition hover:bg-coral"><PlaceLogo place={place} className="h-28 w-40 border border-ink/10" /><p className="eyebrow mt-10">{place.accent}</p><h2 className="mt-5 font-serif text-4xl">{place.name}</h2><p className="mt-4 max-w-md leading-7 text-ink/65">{place.description}</p><span className="mt-10 inline-block text-[10px] font-semibold uppercase tracking-[.2em]">Explore restaurant →</span></Link>)}</section><SiteFooter /></main> }
+export const metadata: Metadata = { title: 'Restaurants' }
+
+export default function RestaurantsPage() {
+  return (
+    <SitePage>
+      <PageIntro
+        title="Find your kind of table."
+        description="From Filipino family meals to Mediterranean plates and fresh seafood. Explore our four restaurants in El Nido."
+      />
+      <section className="page-width page-end" aria-label="Restaurants">
+        <RestaurantCollection headingLevel="h2" />
+      </section>
+    </SitePage>
+  )
+}

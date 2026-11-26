@@ -1,3 +1,46 @@
-import { SiteFooter, SiteHeader, PageIntro } from '@/components/site-shell'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import type { Metadata } from 'next'
+import { PageIntro, SitePage } from '@/components/site-shell'
 
-export default function AboutPage() { return <main className="bg-sand text-ink"><SiteHeader /><PageIntro eyebrow="The company" title="One family. Four unique experiences." description="Food N Bev & Beyond Corporation brings together restaurants and culinary experiences that celebrate local ingredients and long, shared meals in El Nido." /><section className="mx-auto grid max-w-7xl gap-16 px-5 pb-28 md:grid-cols-2 md:px-10"><div className="bg-ink p-8 text-white md:p-12"><p className="eyebrow text-coral">Our approach</p><h2 className="mt-8 font-serif text-5xl">Hospitality, with a sense of place.</h2></div><div className="flex flex-col justify-center gap-6 text-lg leading-8 text-ink/70"><p>We believe a destination is more than a beautiful view. It is the welcome at the door, the meal you remember, and the people who make you feel at home.</p><p>Across our restaurants and experiences, we create thoughtful moments rooted in Filipino warmth and the natural beauty of Palawan.</p></div></section><SiteFooter /></main> }
+export const metadata: Metadata = { title: 'Our story' }
+
+export default function AboutPage() {
+  return (
+    <SitePage>
+      <PageIntro
+        title="One family. Four places to gather."
+        description="Food N Bev & Beyond brings together restaurants and culinary experiences in El Nido, Palawan."
+      />
+      <section className="page-width page-end grid items-center gap-7 md:grid-cols-2 md:gap-10">
+        <div className="relative aspect-[1.5] overflow-hidden rounded md:aspect-[1.15]">
+          <Image
+            src="/banners/the moringa tree.jpg"
+            alt="A welcome from the team at Moringa Tree"
+            fill
+            sizes="(min-width: 768px) 50vw, 95vw"
+            className="object-cover"
+          />
+        </div>
+        <div>
+          <h2 className="font-serif text-4xl leading-tight md:text-5xl">
+            Hospitality, with a sense of place.
+          </h2>
+          <p className="mt-6 leading-8 text-muted-foreground">
+            We believe a destination is more than a beautiful view. It is the
+            welcome at the door, the meal you remember, and the people who make
+            you feel at home.
+          </p>
+          <p className="mt-5 leading-8 text-muted-foreground">
+            Across our restaurants and experiences, we create thoughtful moments
+            rooted in Filipino warmth and the natural beauty of Palawan.
+          </p>
+          <Link href="/restaurants" className="text-link mt-6">
+            Meet our restaurants <ArrowRight size={17} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+    </SitePage>
+  )
+}

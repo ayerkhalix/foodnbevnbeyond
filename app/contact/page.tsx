@@ -1,5 +1,42 @@
-'use client'
-import { useState } from 'react'
-import { SiteFooter, SiteHeader, PageIntro } from '@/components/site-shell'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import type { Metadata } from 'next'
+import { PageIntro, PlaceLogo, SitePage } from '@/components/site-shell'
+import RestaurantContactLinks from '@/components/restaurant-contact-links'
+import { places } from '@/lib/places'
 
-export default function ContactPage() { const [sent, setSent] = useState(false); return <main className="bg-sand text-ink"><SiteHeader /><PageIntro eyebrow="Say hello" title="We'd love to hear from you." description="Planning a table, an event, or something special in El Nido? Our team is here to help." /><section className="mx-auto grid max-w-7xl gap-16 px-5 pb-28 md:grid-cols-2 md:px-10"><div><p className="eyebrow">Find us</p><div className="mt-8 flex flex-col gap-5 text-lg"><p>El Nido, Palawan<br />Philippines 5313</p><p>hello@foodnbev.com<br />+63 917 000 0000</p></div></div>{sent ? <div className="bg-coral p-8"><p className="eyebrow">Message received</p><h2 className="mt-5 font-serif text-5xl">Thank you.</h2><p className="mt-5 leading-7">We&apos;ll be in touch soon.</p></div> : <form onSubmit={(event) => { event.preventDefault(); setSent(true) }} className="flex flex-col gap-5"><label className="eyebrow">Your name<input required className="mt-3 w-full border-b border-ink/30 bg-transparent py-3 text-base font-normal normal-case tracking-normal outline-none" /></label><label className="eyebrow">Email<input required type="email" className="mt-3 w-full border-b border-ink/30 bg-transparent py-3 text-base font-normal normal-case tracking-normal outline-none" /></label><label className="eyebrow">How can we help?<textarea required rows={4} className="mt-3 w-full border-b border-ink/30 bg-transparent py-3 text-base font-normal normal-case tracking-normal outline-none" /></label><button className="mt-3 self-start bg-ink px-7 py-4 text-[10px] font-semibold uppercase tracking-[.2em] text-white">Send message</button></form>}</section><SiteFooter /></main> }
+export const metadata: Metadata = { title: 'Contact' }
+
+export default function ContactPage() {
+  return (
+    <SitePage>
+      <PageIntro
+        title="Contact our restaurants"
+        description="For table enquiries, group meals, or questions about the menu, contact the restaurant directly using the details below."
+      />
+      <section
+        className="page-width contact-collection"
+        aria-label="Restaurant contact details"
+      >
+        {places.map((place) => (
+          <article key={place.slug} className="contact-entry">
+            <div className="contact-identity">
+              <PlaceLogo place={place} className="directory-logo" />
+              <div>
+                <h2>{place.shortName}</h2>
+                <p>{place.location}</p>
+              </div>
+            </div>
+            <RestaurantContactLinks contact={place.contact} />
+          </article>
+        ))}
+      </section>
+      <div className="page-width page-end">
+        <Link className="text-link" href="/menu">
+          Browse the menus before you visit{' '}
+          <ArrowRight size={17} aria-hidden="true" />
+        </Link>
+      </div>
+    </SitePage>
+  )
+}
